@@ -178,24 +178,6 @@ class GCdocs(OTCS):
                     node_id=workspace_id, assignee_type="custom", assignee=role_id
                 )
 
-    def delete_node_by_name(self, parent_id: int, name: str) -> dict | None:
-        response = self.check_node_name(parent_id=parent_id, node_name=name)
-
-        if response and "results" in response and response["results"]:
-            node_id = response["results"][0]["id"]
-
-            return self.delete_node(node_id)
-
-    def get_group_ids_from_names(self, group_names: list) -> dict:
-        group_ids = {}
-
-        for group_name in group_names:
-            group = self.get_group(name=group_name)
-            group_id = self.get_result_value(response=group, key="id")
-            group_ids[group_name] = group_id
-
-        return group_ids
-
     def get_member(self, member_id: int):
         request_url = f"{self.config()['membersUrlv2']}/{member_id}"
         request_header = self.request_form_header()
