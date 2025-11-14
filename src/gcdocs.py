@@ -169,17 +169,17 @@ class GCdocs(OTCS):
                 t.join()
 
     def clear_workspace_roles(self, workspace_id: int) -> None:
-        roles = self.get_workspace_roles(workspace_id=workspace_id)
+        response = self.get_workspace_roles(workspace_id=workspace_id)
 
-        if roles and roles["results"]:
-            roles = self.get_result_values(response=roles, key="id")
+        if response and response["results"]:
+            roles = self.get_result_values(response=response, key="id")
             for role_id in roles:
                 self.remove_permission(
                     node_id=workspace_id, assignee_type="custom", assignee=role_id
                 )
 
     def get_member(self, member_id: int):
-        request_url = f"{self.config()['membersUrlv2']}/{member_id}"
+        request_url = "{}/{}".format(self.config()["membersUrlv2"], member_id)
         request_header = self.request_form_header()
 
         return self.do_request(
