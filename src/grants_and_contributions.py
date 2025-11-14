@@ -82,4 +82,8 @@ def grants_and_contributions(gcdocs: GCdocs, workspace_id: int) -> None:
     )
 
     # delete duplicate close-out folder
-    gcdocs.delete_node_by_name(parent_id=workspace_id, name="Close-Out")
+    response = gcdocs.check_node_name(parent_id=workspace_id, node_name="Close-Out")
+
+    if response and "results" in response and response["results"]:
+        node_id = response["results"][0]["id"]
+        gcdocs.delete_node(node_id)
